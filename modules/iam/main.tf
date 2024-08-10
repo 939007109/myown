@@ -41,6 +41,7 @@ resource "aws_iam_role" "codebuild_role" {
     "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess",
     "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
   ]
 }
 
@@ -59,8 +60,8 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
                 "s3:ListBucket"
             ],
             Resource = [
-                "arn:aws:s3:::${var.codebuild_bucket}",
-                "arn:aws:s3:::${var.codebuild_bucket}/*"
+                "arn:aws:s3:::${var.codebuild_bucket_id}",
+                "arn:aws:s3:::${var.codebuild_bucket_id}/*"
             ]
         },
         {
@@ -92,4 +93,73 @@ resource "aws_iam_role" "codepipeline_role" {
         }
     ]
   })
+}
+
+resource "aws_iam_role_policy" "codepipeline_policy" {
+    name = "codepipeline-policy"
+    role = aws_iam_role.codepipeline_role.id
+
+    policy = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+            {
+                Effect = "Allow",
+                Action = [
+                    "s3:GetObject",
+                    "s3:PutObject",
+                    "s3:ListBucket"
+                ],
+                Resource = [
+                    "arn:aws:s3:::${var.codebuild_bucket_id}",
+                    "arn:aws:s3:::${var.codebuild_bucket_id}/*"
+                ]
+            },
+            {
+                Effect = "Allow",
+                Action = [
+                    "codebuild:BatchGetBuilds",
+                    "codebuild:StartBuild"
+                ],
+                Resource = "*"
+            },
+            {
+                Effect = "Allow",
+                Action = [
+                    "ec2:Describe*",
+                    "elasticloadbalancing:Describe*",
+                    "autoscaling:Describe*",
+                    "cloudwatch:Describe*",
+                    "cloudformation:Describe*",
+                    "cloudformation:GetTemplate",
+                    "cloudformation:ValidateTemplate"
+                ],
+                Resource = "*"
+            }
+        ]
+    })
+}
+
+data "aws_caller_identity" "default" {}
+
+resource "aws_s3_bucket_policy" "codepipeline_access" {
+  bucket = var.codebuild_bucket_id
+
+  policy = jsonencode(
+    {
+        "Version" = "2012-10-17",
+        "Statement" = [
+            {
+                Effect = "Allow",
+                Principal = {
+                    AWS = "arn:aws:iam::${data.aws_caller_identity.default.account_id}:role/codepipeline-role"
+                },
+                Action = "s3:*",
+                Resource = [
+                    "arn:aws:s3:::${var.codebuild_bucket_id}",
+                    "arn:aws:s3:::${var.codebuild_bucket_id}/*"
+                ]
+            }
+        ]
+    }
+  )
 }

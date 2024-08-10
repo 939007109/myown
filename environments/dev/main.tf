@@ -31,13 +31,13 @@ module "iam" {
     source = "../../modules/iam"
     depends_on = [ module.s3 ]
     
-    environment = "Global"
-    codebuild_bucket = module.s3.codebuild_bucket_id
+    environment = var.environment
+    codebuild_bucket_id = module.s3.codebuild_bucket_id
 }
 
 module "s3" {
     source = "../../modules/s3"
-    environment = "Global"
+    environment = var.environment
     project_name = "php-app"
 }
 

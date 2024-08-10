@@ -26,7 +26,7 @@ resource "aws_codebuild_project" "app_build" {
   source {
     type    = "GITHUB"
     location = "https://github.com/${var.github_owner}/${var.github_repo}.git"
-    buildspec = "buildspec.yaml"  
+    buildspec = "buildspec_app.yml"  
   }
 
   logs_config {

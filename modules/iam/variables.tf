@@ -3,6 +3,6 @@ variable "environment" {
   description = "Environment name (dev, prod)"
 }
 
-variable "codebuild_bucket" {
+variable "codebuild_bucket_id" {
   type = string
 }
