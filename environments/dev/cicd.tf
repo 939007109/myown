@@ -2,10 +2,10 @@ module "php-app-dev" {
     source = "../../modules/cicd"
     project_name = "9acts-php-app"
     environment  = "dev"
-    github_owner = "name"
+    github_owner = "DKBIT1792"
     app_name    = "php-app"
     github_repo = "project-9acts"
-    github_branch = "main"
+    github_branch = "master"
     github_token = var.github_token
 
     codebuild_role_arn     =    module.iam.codebuild_role_arn

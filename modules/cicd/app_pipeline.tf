@@ -1,4 +1,4 @@
-resource "aws_codepipeline" "cicd_pipeline" {
+resource "aws_codepipeline" "app_pipeline" {
     name = "${var.app_name}-${var.environment}-pipeline"
 
     role_arn =  var.codepipeline_role_arn
@@ -20,8 +20,6 @@ resource "aws_codepipeline" "cicd_pipeline" {
             output_artifacts = ["source_output"]
             
             configuration = {
-              # S3Bucket = aws_s3_bucket.codebuild_bucket.id
-              # S3ObjectKey = "source.zip"
               Owner     =   var.github_owner
               Repo      =   var.github_repo
               Branch    =   var.github_branch
@@ -42,7 +40,7 @@ resource "aws_codepipeline" "cicd_pipeline" {
         input_artifacts = ["source_output"]
         output_artifacts = ["build_output"]
         configuration = {
-          ProjectName = aws_codebuild_project.terraform_build.name
+          ProjectName = aws_codebuild_project.app_build.name
         }
       }
     }
