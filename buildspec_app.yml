@@ -27,6 +27,6 @@ phases:
       - printf '[{"name":"php-app","imageUri":"%s"}]' ${AWS_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/php-app:latest > imagedefinitions.json
       # - aws ecs update-service --cluster dev-ecs-cluster --service php-service --force-new-deployment
 
-  artifacts:
-    files:
-      - imagedefinitions.json
+artifacts:
+  files:
+  - imagedefinitions.json
