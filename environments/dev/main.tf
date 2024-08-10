@@ -14,11 +14,6 @@ module "vpc" {
     environment =  var.environment
 }
 
-module "iam" {
-    source = "../../modules/iam"
-    
-    environment = var.environment
-}
 
 module "security" {
   source = "../../modules/security"
@@ -29,6 +24,21 @@ module "security" {
   ecs_container_port   =    var.container_port
   allowed_cidrs =   var.allowed_cidrs
   environment   =   var.environment
+}
+
+
+module "iam" {
+    source = "../../modules/iam"
+    depends_on = [ module.s3 ]
+    
+    environment = "Global"
+    codebuild_bucket = module.s3.codebuild_bucket_id
+}
+
+module "s3" {
+    source = "../../modules/s3"
+    environment = "Global"
+    project_name = "php-app"
 }
 
 module "alb" {
@@ -42,6 +52,13 @@ module "alb" {
     environment =   var.environment
 }
 
+module "ecr" {
+    source = "../../modules/ecr"
+
+    repo_name = "php-app"
+    environment = var.environment
+}
+
 module "ecs" {
     source = "../../modules/ecs"
 
@@ -51,7 +68,8 @@ module "ecs" {
     requires_compatibilities    =   var.requires_compatibilities
     cpu = var.cpu
     memory  =   var.memory
-    image   =   var.image
+    repository_url = module.ecr.repository_url
+    image_tag =   "latest"
     container_name  =   var.container_name
     container_port  =   var.container_port
     host_port       =   var.host_port
@@ -63,4 +81,13 @@ module "ecs" {
     assign_public_ip    =   var.assign_public_ip
     target_group_arn    =   module.alb.target_group_arn
     environment =   var.environment
+}
+
+module "monitoring" {
+  source = "../../modules/monitoring"
+  environment = var.environment
+  ecs_cluster_name = module.ecs.ecs_cluster_name
+  ecs_service_name = module.ecs.ecs_service_name
+  cpu_scale_up_policy_arn = module.ecs.cpu_scale_up_policy_arn
+  cpu_scale_down_policy_arn = module.ecs.cpu_scale_down_policy_arn
 }

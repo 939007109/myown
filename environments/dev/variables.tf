@@ -96,6 +96,10 @@ variable "allowed_cidrs" {
   type = list(string)
 }
 
+variable "github_token" {
+  type = string
+}
+
 variable "environment" {
   type = string
 }
