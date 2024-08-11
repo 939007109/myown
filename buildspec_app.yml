@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+  variables:
+    APP_PATH: "environments/dev/php-app"
+
 phases:
   install:
     # runtime-versions:
@@ -10,23 +14,29 @@ phases:
 
   pre_build:
     commands:
+      - echo "REGION = ${AWS_REGION}"
+      - echo "${AWS_REGION}"
+      - export ACCOUNT_ID=$(echo $CODEBUILD_BUILD_ARN | cut -f5 -d ':') 
+      - echo "Account ID is ${ACCOUNT_ID}"
       - echo "Logging in to Amazon ECR..."
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
       - echo "Starting Docker build..."
+      - cd $APP_PATH
       - docker build -t php-app .
-      - docker tag php-app:latest ${AWS_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/php-app:latest
+      - docker tag php-app:latest ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/php-app:latest
 
   build:
     commands:
       - echo "Pushing the Docker image to ECR..."
-      - docker push ${AWS_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/php-app:latest
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/php-app:latest
   
   post_build:
     commands:
       - echo "Updating ECS service with new image..."
-      - printf '[{"name":"php-app","imageUri":"%s"}]' ${AWS_ACCOUNT_ID}.dkr.ecr.ap-south-1.amazonaws.com/php-app:latest > imagedefinitions.json
-      # - aws ecs update-service --cluster dev-ecs-cluster --service php-service --force-new-deployment
+      - cd $CODEBUILD_SRC_DIR
+      - printf '[{"name":"php-app","imageUri":"%s"}]' ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/php-app:latest > imagedefinitions.json
+      
 
 artifacts:
   files:
-  - imagedefinitions.json
+  - "imagedefinitions.json"

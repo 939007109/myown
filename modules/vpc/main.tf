@@ -105,10 +105,5 @@ resource "aws_route_table_association" "vpc-private-rt" {
     route_table_id = aws_route_table.vpc-private-rt.id
 }
 
-# resource "aws_route" "private_nat" {
-#   count = length(var.private_subnets)
-#   route_table_id = aws_route_table.vpc-private-rt.id
-#   destination_cidr_block = "0.0.0.0/0"
-#   nat_gateway_id = aws_nat_gateway.vpc-nat[count.index].id
-# }
+
 

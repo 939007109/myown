@@ -1,10 +1,5 @@
-# provider "aws" {
-#   alias  = "backend"
-#   region = "ap-south-1"
-# }
 
 resource "aws_s3_bucket" "terraform_state" {
-  #provider = aws.backend  
   bucket = "project-9acts-terraform-state-bucket"
 
     versioning {

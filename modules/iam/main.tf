@@ -53,6 +53,19 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
     Version = "2012-10-17"
     Statement = [
         {
+            Effect = "Allow",
+            Action = [
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+                "ecr:GetAuthorizationToken",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetRepositoryPolicy",
+                "ecr:GetAuthorizationToken",
+                "ecr:PutImage"
+            ],
+            Resource = "*"
+        },
+        {
             Effect = "Allow"
             Action = [
                 "s3:GetObject",
@@ -68,7 +81,7 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
             Effect = "Allow"
             Action =  [
                 "logs:CreateLogGroup",
-                "logs:CreateLogsStream",
+                "logs:CreateLogStream",
                 "logs:PutLogEvents"
             ]
             Resource = "*"
@@ -93,6 +106,11 @@ resource "aws_iam_role" "codepipeline_role" {
         }
     ]
   })
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+  ]
 }
 
 resource "aws_iam_role_policy" "codepipeline_policy" {
