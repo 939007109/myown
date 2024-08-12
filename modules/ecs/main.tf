@@ -25,6 +25,14 @@ resource "aws_ecs_task_definition" "php" {
                     hostPort      = var.host_port
                 }
             ]
+            # logConfiguration = {
+            #   logDriver = "awslogs"
+            #   options = {
+            #     awslogs-group = var.ecs_cloudwatch_log_group_name
+            #     awslogs-stream-prefix = "ecs"
+            #     awslogs-region = var.region
+            #   }
+            # }
         }
     ])
 

@@ -1,3 +1,7 @@
+variable "region" {
+  type = string
+}
+
 variable "cluster_name" {
     type = string
     description = "Name of the ECS cluster"
@@ -55,6 +59,11 @@ variable "host_port" {
   type = number
   description = "Host port to map to the container port"
 }
+
+# variable "ecs_cloudwatch_log_group_name" {
+#   type = string
+#   description = "ECS cloud watch log group"
+# }
 
 variable "execution_role_arn" {
   type = string

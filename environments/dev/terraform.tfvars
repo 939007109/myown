@@ -26,3 +26,6 @@ lb_name     =   "dev-alb"
 target_group_name = "dev-tg"
 allowed_cidrs   =   ["0.0.0.0/0"]
 environment =  "dev"
+
+# # CloudWatch Log Groups
+# ecs_cloudwatch_log_group_name = "/ecs/php-app"

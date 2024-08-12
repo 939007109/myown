@@ -1,6 +1,9 @@
 resource "aws_cloudwatch_log_group" "ecs_task_logs" {
   name = "/ecs/${replace(var.ecs_service_name, ":", "-")}"
   retention_in_days = 30
+  tags = {
+    Environment = var.environment
+  }
 }
 
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_high" {

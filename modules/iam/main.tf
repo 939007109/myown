@@ -16,6 +16,26 @@ resource "aws_iam_role" "ecs_task_execution_role" {
     managed_policy_arns = [
         "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
     ]
+
+    inline_policy {
+      name = "${var.environment}-ecs-logs-policy"
+
+      policy = jsonencode({
+        Version = "2012-10-17",
+        Statement = [
+            {
+                Effect = "Allow",
+                Action = [
+                    "logs:CreateLogGroup",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                ],
+                Resource = "*"
+            }
+        ]
+      })
+    }
+
     tags = {
         Name = "${var.environment}-ecsTaskExecutionRole"
         Environment = var.environment

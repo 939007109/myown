@@ -62,6 +62,7 @@ module "ecr" {
 module "ecs" {
     source = "../../modules/ecs"
 
+    region = var.region
     cluster_name = var.cluster_name
     family  =   var.family
     network_mode    = var.network_mode
@@ -73,6 +74,7 @@ module "ecs" {
     container_name  =   var.container_name
     container_port  =   var.container_port
     host_port       =   var.host_port
+    #ecs_cloudwatch_log_group_name    = var.ecs_cloudwatch_log_group_name
     execution_role_arn  =   module.iam.ecs_task_execution_role_arn
     service_name    =   var.service_name
     desired_count   =   var.desired_count
@@ -81,6 +83,8 @@ module "ecs" {
     assign_public_ip    =   var.assign_public_ip
     target_group_arn    =   module.alb.target_group_arn
     environment =   var.environment
+
+    #depends_on = [ module.monitoring ]
 }
 
 module "monitoring" {
@@ -90,4 +94,21 @@ module "monitoring" {
   ecs_service_name = module.ecs.ecs_service_name
   cpu_scale_up_policy_arn = module.ecs.cpu_scale_up_policy_arn
   cpu_scale_down_policy_arn = module.ecs.cpu_scale_down_policy_arn
+}
+
+module "secret-manager" {
+  source = "../../modules/secret-manager"
+
+  githib_token = var.github_token
+}
+
+module "route53" {
+  source = "../../modules/route53"
+
+  domain_name = "project-9acts.com"
+  subdomain_name = "php-app-dev.project-9acts.com"
+  alb_dns_name = module.alb.alb_dns_name
+  alb_zone_id = module.alb.alb_zone_id
+
+  depends_on = [module.alb]
 }

@@ -103,3 +103,8 @@ variable "github_token" {
 variable "environment" {
   type = string
 }
+
+# CloudWatch log groups
+# variable "ecs_cloudwatch_log_group_name" {
+#   type = string
+# }
