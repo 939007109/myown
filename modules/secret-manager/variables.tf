@@ -1,4 +1,4 @@
-variable "githib_token" {
+variable "github_token" {
   type = string
   sensitive = true
 }

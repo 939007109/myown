@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    GITHUB_TOKEN: github_token
+    GITHUB_TOKEN: github_token_n
 
 phases:
   install:
@@ -15,9 +15,9 @@ phases:
   pre_build:
     commands:
       - echo "FetChing GitHub Token"
-      - export GITHUB_TOKEN=${aws secretmanager get-secret-value --secret-id github_token --query SecretString --output text}
+      - export GITHUB_TOKEN=$(aws secretsmanager get-secret-value --secret-id github_token --query SecretString --output text)
       - echo "Initializing Terraform Init for dev environment..."
-      - cd environment/dev
+      - cd environments/dev
       - terraform init
 
   build:

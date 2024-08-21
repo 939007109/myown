@@ -57,11 +57,14 @@ resource "aws_iam_role" "codebuild_role" {
   })
 
   managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
     "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess",
     "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryFullAccess",
     "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess",
-    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
+    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
+    "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
   ]
 }
 
@@ -75,13 +78,15 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
         {
             Effect = "Allow",
             Action = [
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:BatchGetImage",
-                "ecr:GetAuthorizationToken",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:GetRepositoryPolicy",
-                "ecr:GetAuthorizationToken",
-                "ecr:PutImage"
+                "elasticloadbalancing:DescribeTags",
+                "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                "elasticloadbalancing:DescribeTargetGroupAttributes",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "secretsmanager:CreateSecret",
+                "secretsmanager:DescribeSecret",
+                "secretsmanager:GetResourcePolicy"
             ],
             Resource = "*"
         },
@@ -105,9 +110,14 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
                 "logs:PutLogEvents"
             ]
             Resource = "*"
-        }
+        },
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_admin_access" {
+  role = aws_iam_role.codebuild_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 
@@ -129,7 +139,11 @@ resource "aws_iam_role" "codepipeline_role" {
 
   managed_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+    "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess",
+    "arn:aws:iam::aws:policy/IAMFullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+    "arn:aws:iam::aws:policy/AWSCodePipeline_FullAccess",
+    "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
   ]
 }
 
