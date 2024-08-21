@@ -31,6 +31,7 @@ module "iam" {
     source = "../../modules/iam"
     depends_on = [ module.s3 ]
     
+    region = var.region
     environment = var.environment
     codebuild_bucket_id = module.s3.codebuild_bucket_id
 }
@@ -99,7 +100,7 @@ module "monitoring" {
 module "secret-manager" {
   source = "../../modules/secret-manager"
 
-  githib_token = var.github_token
+  github_token = var.github_token
 }
 
 module "route53" {
