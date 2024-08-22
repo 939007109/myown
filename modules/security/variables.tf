@@ -3,6 +3,14 @@ variable "vpc_id" {
   description = "VPC ID where the security group will be deployed"
 }
 
+variable "vpc_name" {
+  type = string
+}
+
+variable "public_subnets" {
+  type = list(string)
+}
+
 variable "lb_name" {
   type = string
   description = "Name of the Load Balancer"

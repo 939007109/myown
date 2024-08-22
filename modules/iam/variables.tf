@@ -11,3 +11,11 @@ variable "environment" {
 variable "codebuild_bucket_id" {
   type = string
 }
+
+variable "vpc_flow_logs_name" {
+  type = string
+}
+
+variable "vpc_id" {
+  type = string
+}

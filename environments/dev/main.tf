@@ -24,6 +24,8 @@ module "security" {
   ecs_container_port   =    var.container_port
   allowed_cidrs =   var.allowed_cidrs
   environment   =   var.environment
+  vpc_name = var.vpc_name
+  public_subnets = module.vpc.public_subnet_ids
 }
 
 
@@ -31,9 +33,11 @@ module "iam" {
     source = "../../modules/iam"
     depends_on = [ module.s3 ]
     
+    vpc_id = module.vpc.vpc_id
     region = var.region
     environment = var.environment
     codebuild_bucket_id = module.s3.codebuild_bucket_id
+    vpc_flow_logs_name = module.monitoring.vpc_flow_logs_name
 }
 
 module "s3" {
@@ -91,6 +95,7 @@ module "ecs" {
 module "monitoring" {
   source = "../../modules/monitoring"
   environment = var.environment
+  vpc_name = var.vpc_name
   ecs_cluster_name = module.ecs.ecs_cluster_name
   ecs_service_name = module.ecs.ecs_service_name
   cpu_scaling_policy_arn = module.ecs.cpu_scaling_policy_arn

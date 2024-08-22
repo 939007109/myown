@@ -24,3 +24,8 @@ resource "aws_cloudwatch_metric_alarm" "ecs_cpu_high" {
 
   alarm_actions = [var.cpu_scaling_policy_arn]
 }
+
+resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
+  name = "/aws/${var.vpc_name}/flow-logs"
+}
+
