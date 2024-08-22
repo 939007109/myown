@@ -91,6 +91,7 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
                 "ecs:DescribeServices",
                 "ecs:DescribeTaskDefinition",
                 "ecs:DescribeTasks",
+                "application-autoscaling:ListTagsForResource",
                 "iam:ListRolePolicies",
                 "iam:GetRole",
                 "iam:PassRole",
