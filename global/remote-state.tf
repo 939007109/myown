@@ -3,7 +3,7 @@ data "terraform_remote_state" "dev" {
 
     config = {
       bucket = "project-9acts-terraform-state-bucket"
-      key = "dev/terraform.tfstate"
+      key = "environments/dev/terraform.tfstate"
       region = "ap-south-1"
     }
 }
