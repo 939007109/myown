@@ -39,7 +39,7 @@ resource "aws_security_group" "ecs_sg" {
     from_port   = var.ecs_container_port
     to_port     = var.ecs_container_port
     protocol    = "tcp"
-    cidr_blocks = var.allowed_cidrs
+    security_groups = [aws_security_group.alb_sg.id]
   }
 
   egress {

@@ -26,6 +26,7 @@ module "security" {
   environment   =   var.environment
   vpc_name = var.vpc_name
   public_subnets = module.vpc.public_subnet_ids
+  private_subnets = module.vpc.private_subnet_ids
 }
 
 

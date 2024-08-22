@@ -11,6 +11,10 @@ variable "public_subnets" {
   type = list(string)
 }
 
+variable "private_subnets" {
+  type = list(string)
+}
+
 variable "lb_name" {
   type = string
   description = "Name of the Load Balancer"
