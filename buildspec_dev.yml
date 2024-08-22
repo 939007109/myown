@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    GITHUB_TOKEN: github_token_n
+    GITHUB_TOKEN: github_token
 
 phases:
   install:

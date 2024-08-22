@@ -86,7 +86,15 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
                 "dynamodb:DeleteItem",
                 "secretsmanager:CreateSecret",
                 "secretsmanager:DescribeSecret",
-                "secretsmanager:GetResourcePolicy"
+                "secretsmanager:GetResourcePolicy",
+                "ecs:DescribeClusters",
+                "ecs:DescribeServices",
+                "ecs:DescribeTaskDefinition",
+                "ecs:DescribeTasks",
+                "iam:ListRolePolicies",
+                "iam:GetRole",
+                "iam:PassRole",
+                "route53:GetHostedZone",
             ],
             Resource = "*"
         },

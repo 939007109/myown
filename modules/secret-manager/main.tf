@@ -1,5 +1,5 @@
 resource "aws_secretsmanager_secret" "github_token" {
-  name = "github_token_n"
+  name = "github_token"
   description = "GitHub token for accessing repository"
 }
 

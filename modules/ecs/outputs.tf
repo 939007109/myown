@@ -14,10 +14,10 @@ output "ecs_service_name" {
   value = aws_ecs_service.php.id
 }
 
-output "cpu_scale_up_policy_arn" {
-  value = aws_appautoscaling_policy.cpu_scale_up.arn
+output "cpu_scaling_policy_arn" {
+  value = aws_appautoscaling_policy.cpu_scale.arn
 }
 
-output "cpu_scale_down_policy_arn" {
-  value = aws_appautoscaling_policy.cpu_scale_down.arn
-}
+# output "cpu_scale_down_policy_arn" {
+#   value = aws_appautoscaling_policy.cpu_scale_down.arn
+# }

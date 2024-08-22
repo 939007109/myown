@@ -93,8 +93,8 @@ module "monitoring" {
   environment = var.environment
   ecs_cluster_name = module.ecs.ecs_cluster_name
   ecs_service_name = module.ecs.ecs_service_name
-  cpu_scale_up_policy_arn = module.ecs.cpu_scale_up_policy_arn
-  cpu_scale_down_policy_arn = module.ecs.cpu_scale_down_policy_arn
+  cpu_scaling_policy_arn = module.ecs.cpu_scaling_policy_arn
+  #cpu_scale_down_policy_arn = module.ecs.cpu_scale_down_policy_arn
 }
 
 module "secret-manager" {
