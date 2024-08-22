@@ -94,7 +94,9 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
                 "iam:ListRolePolicies",
                 "iam:GetRole",
                 "iam:PassRole",
+                "iam:GetRolePolicy",
                 "route53:GetHostedZone",
+                "route53:ListTagsForResource"
             ],
             Resource = "*"
         },
