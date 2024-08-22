@@ -91,12 +91,14 @@ resource "aws_iam_role_policy" "coudbuild_policy" {
                 "ecs:DescribeServices",
                 "ecs:DescribeTaskDefinition",
                 "ecs:DescribeTasks",
+                "ecs:UpdateService",
                 "application-autoscaling:ListTagsForResource",
                 "iam:ListRolePolicies",
                 "iam:GetRole",
                 "iam:PassRole",
                 "iam:GetRolePolicy",
                 "iam:ListAttachedRolePolicies",
+                "iam:AttachRolePolicy",
                 "route53:GetHostedZone",
                 "route53:ListTagsForResource",
                 "route53:ListResourceRecordSets",
@@ -265,9 +267,3 @@ resource "aws_iam_role_policy" "vpc_flow_log_policy" {
   })
 }
 
-resource "aws_flow_log" "vpc_flow_logs" {
-  iam_role_arn    = aws_iam_role.vpc_flow_log_role.arn
-  log_group_name  = var.vpc_flow_logs_name
-  vpc_id          = var.vpc_id
-  traffic_type    = "ALL"
-}
