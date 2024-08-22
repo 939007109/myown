@@ -14,7 +14,7 @@ phases:
 
   pre_build:
     commands:
-      - echo "FetChing GitHub Token"
+      - echo "Fetching GitHub Token"
       - export GITHUB_TOKEN=$(aws secretsmanager get-secret-value --secret-id github_token --query SecretString --output text)
       - echo "Initializing Terraform Init for dev environment..."
       - cd environments/dev
