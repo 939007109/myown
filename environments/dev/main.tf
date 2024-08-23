@@ -10,7 +10,6 @@ module "vpc" {
     public_subnets = var.public_subnets
     private_subnets = var.private_subnets
     availability_zones = var.availability_zones
-    #allocation_ids  =  [aws_eip.eip_nat[*].id]
     environment =  var.environment
 }
 
@@ -78,7 +77,6 @@ module "ecs" {
     container_name  =   var.container_name
     container_port  =   var.container_port
     host_port       =   var.host_port
-    #ecs_cloudwatch_log_group_name    = var.ecs_cloudwatch_log_group_name
     execution_role_arn  =   module.iam.ecs_task_execution_role_arn
     service_name    =   var.service_name
     desired_count   =   var.desired_count
@@ -87,8 +85,6 @@ module "ecs" {
     assign_public_ip    =   var.assign_public_ip
     target_group_arn    =   module.alb.target_group_arn
     environment =   var.environment
-
-    #depends_on = [ module.monitoring ]
 }
 
 module "monitoring" {
@@ -101,7 +97,6 @@ module "monitoring" {
   cpu_scaling_policy_arn = module.ecs.cpu_scaling_policy_arn
   vpc_flow_logs_name = module.monitoring.vpc_flow_logs_name
   vpc_flow_log_role = module.iam.vpc_flow_log_role
-  #cpu_scale_down_policy_arn = module.ecs.cpu_scale_down_policy_arn
 }
 
 module "secret-manager" {

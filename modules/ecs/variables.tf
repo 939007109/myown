@@ -60,11 +60,6 @@ variable "host_port" {
   description = "Host port to map to the container port"
 }
 
-# variable "ecs_cloudwatch_log_group_name" {
-#   type = string
-#   description = "ECS cloud watch log group"
-# }
-
 variable "execution_role_arn" {
   type = string
   description = "ARN of the execution role for ECS tasks"
