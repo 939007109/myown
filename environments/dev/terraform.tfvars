@@ -1,4 +1,4 @@
-#region = "ap-south-1"
+#region = "us-east-1"
 
 ## VPC
 vpc_name = "dev-vpc"
