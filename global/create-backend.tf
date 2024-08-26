@@ -1,6 +1,6 @@
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "project-9acts-terraform-state-bucket"
+  bucket = "project-9acts-terraform-state-bucket123"
 
     versioning {
         enabled = true
