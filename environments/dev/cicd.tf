@@ -2,7 +2,7 @@ module "php-app-dev" {
     source = "../../modules/cicd"
     project_name = "9acts-php-app"
     environment  = "dev"
-    github_owner = "DKBIT1792"
+    github_owner = "939007109"
     app_name    = "php-app"
     github_repo = "project-9acts"
     github_branch = "master"
